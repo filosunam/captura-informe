@@ -1,0 +1,22 @@
+<div class="section grid_12">
+	<h4 class="title" id="users_slice"><?php print $this->user->getIdentity()->area; ?></h4>	
+	<?php if(count($this->commits) > 0) : ?>	
+	<div id="commits">
+		<h5><a href="#" class="toggle_commits">Instrucciones</a></h5>
+		<div class="list">
+			<?php
+			
+				$li = '<span>%s</span>';
+				foreach($this->commits as $field)
+					printf($li, $field['commit']);
+
+			?>
+		</div>
+	</div>
+	<?php endif; ?>
+	<ul class="options">
+		<li><a href="/users/list" class="hreq autoload">Listar usuarios</a></li>
+		<li><a href="/users/add" class="hreq">Añadir nuevo</a></li>
+	</ul>
+	<div id="users_response" class="response"></div>
+</div>

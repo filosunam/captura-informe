@@ -1,0 +1,36 @@
+<div id="welcome">
+    <h3>Bienvenido</h3>
+    <h4>Sistema de captura del informe anual</h4>
+    
+    <div class="<?php print $this->user->hasIdentity() ? 'getstarted-log' : 'getstarted' ; ?>">
+    	<?php if($this->user->hasIdentity()) : ?>
+    		<a href="/reportes/index">Iniciar captura</a>
+    	<?php else : ?>
+    		<a href="/users/login">Iniciar sesión</a>
+    	<?php endif; ?>
+    </div>
+</div>
+
+<div class="grid_4">
+	<h5>¿Qué es esto?</h5>
+	<p>
+		Esta aplicación tiene la finalidad de facilitar y agilizar la captura y recopilación de los datos para los informes de la Facultad.
+	</p>
+	<p>
+		La aplicación permite que cada área de nuestra Facultad introduzca la información requerida. Por ello, solicitamos que se introduzca de la manera más concisa posible esa información.
+	</p>
+</div>
+<div class="grid_4">
+	<h5>¿Qué hacer?</h5>
+	<p>
+		La aplicación consta de un área para resumir el informe y otra para poner el informe por extenso, además de permitir, cuando se requiera, adjuntar todo tipo de archivos. 
+	</p>
+</div>
+<div class="grid_4">
+	<h5>Dudas y preguntas</h5>
+	<p>
+		Enviar un correo a <strong><a href="mailto:sacadfyl@gmail.com">sacadfyl@gmail.com</a></strong>
+		<br/>Tels. 5622-1815 y 5550-8008
+
+	</p>
+</div>

@@ -1,0 +1,5 @@
+<div class="confirm">
+	<h5>¿Estás seguro que deseas generar otra contraseña y enviarla al usuario <strong><?php print $this->row['username'] ?></strong>?</h5>
+	<a href="/users/list" class="hreq">No</a>
+	<a href="/users/mail/<?php print $this->row['id'] ?>" class="hreq">Sí</a>
+</div>

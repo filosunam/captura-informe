@@ -1,0 +1,5 @@
+<div class="confirm">
+	<h5>¿Estás seguro que deseas eliminar el archivo <strong><?php print $this->params['file'] ?></strong>?</h5>
+	<a href="/reportes/edit/<?php print $this->params['id'] ?>">Claro que no</a>
+	<a href="/reportes/trashfile/<?php print base64_encode(serialize($this->params)) ?>">Por supuesto</a>
+</div>

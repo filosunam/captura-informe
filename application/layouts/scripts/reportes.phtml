@@ -1,0 +1,49 @@
+<div class="section grid_12">
+	<h4 class="title" id="reportes_slice"><?php print $this->user->getIdentity()->area; ?></h4>	
+	<?php if(count($this->commits) > 0) : ?>
+	<?php			
+			$guias = new Zend_Session_Namespace('Guias');
+			$hide  = $guias->show == 1 ? '' : ' hide';
+			$class = $guias->show == 1 ? '' : ' commits_show';  
+	?>	
+	<div id="commits">
+		<h5><a href="#" class="toggle_commits<?php print $class ?>">Instrucciones</a></h5>
+		<div class="list<?php print $hide ?>">
+			<?php
+			
+				$li = '<span>%s</span>';
+				foreach($this->commits as $field)
+					printf($li, $field['commit']);
+
+			?>
+		</div>
+	</div>
+	<?php endif; ?>
+	<ul class="options">
+		<li><a href="/reportes/index">Listar reportes</a></li>
+		<li><a href="/reportes/add">Añadir nuevo</a></li>
+	</ul>
+	<div id="reportes_response" class="response">
+		<?php
+
+			$request  = Zend_Controller_Front::getInstance()->getRequest();
+			$messages = $request->getParam('messages');
+			$messages = unserialize(base64_decode($messages));
+		
+			if($messages && (count($messages) > 0))
+			{
+			
+				$messages_format = '<div class="status_%s">%s</div>';
+				foreach($messages as $type => $list)
+				{
+					$class = $type == 'error' ? 'false' : 'true';
+					foreach($list as $message)
+						printf($messages_format, $class, $message);
+				}
+			
+			}
+		
+		?>
+		<?php echo $this->layout()->content ?>
+	</div>
+</div>

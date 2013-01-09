@@ -1,0 +1,53 @@
+<?php if(count($this->list) > 0) : ?>
+<table class="table1">
+	<caption>Lista de instrucciones</caption>
+	<thead>
+		<tr>
+			<th style="width: 2%">#</th>
+			<th style="width: 17%">Área</th>
+			<th style="width: 60%">Guía</th>
+			<th style="width: 15%">Controlador/Acción</th>
+			<th style="width: 6%"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$tr = '<tr>
+				     <td>%1$d</td>
+				     <td>%2$s</td>
+				     <td>%3$s</td>
+				     <td>%4$s</td>
+				     <td>
+				       <a href="/guias/edit/%1$d" class="edit">Editar</a>
+					   <a href="/guias/delete/%1$d" class="delete">Eliminar</a>
+				     </td>
+				   </tr>';
+		
+			$users = new Application_Model_DbTable_Users;
+		
+			foreach($this->list as $item)
+			{
+				$guia = strip_tags($item['commit']);
+				$guia = strlen($guia) > 200
+					  ? substr($guia, 0, 200) . '[...]'
+					  : $guia;
+				
+				$user = $users->find($item['user_id']);
+							
+				printf(
+					$tr,
+					$item['id'],
+					$user[0]['area'],
+					$guia,
+					"{$item['controller']}/{$item['action']}"
+				);
+				
+			}
+				
+		?>
+	</tbody>
+</table>
+<?php else : ?>
+<div class="aviso">Aún no tienes instrucciones para los usuarios</div>
+<?php endif; ?>

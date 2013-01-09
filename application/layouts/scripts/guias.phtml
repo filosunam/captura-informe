@@ -1,0 +1,30 @@
+<div class="section grid_12">
+	<h4 class="title" id="guias_slice">Instrucciones para los usuarios</h4>
+	<ul class="options">
+		<li><a href="/guias">Listar guias</a></li>
+		<li><a href="/guias/add">Añadir nueva</a></li>
+	</ul>
+	<div id="guias_response" class="response">
+		<?php
+
+			$request  = Zend_Controller_Front::getInstance()->getRequest();
+			$messages = $request->getParam('messages');
+			$messages = unserialize(base64_decode($messages));
+		
+			if($messages && (count($messages) > 0))
+			{
+			
+				$messages_format = '<div class="status_%s">%s</div>';
+				foreach($messages as $type => $list)
+				{
+					$class = $type == 'error' ? 'false' : 'true';
+					foreach($list as $message)
+						printf($messages_format, $class, $message);
+				}
+			
+			}
+		
+		?>
+		<?php echo $this->layout()->content ?>
+	</div>
+</div>

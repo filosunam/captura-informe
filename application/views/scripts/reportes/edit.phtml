@@ -1,0 +1,64 @@
+<?php print $this->form ?>
+<?php
+
+	$dir = $this->directory . "/{$this->id}";
+	if(is_dir($dir) and ($this->id > 0)) :
+		
+		$count = 0;
+		foreach(new DirectoryIterator($dir) as $file)				
+			$count += $file->isDot() ? 0 : 1;
+		
+		if($count > 0) :
+	
+?>
+<table class="table1">
+<caption>Archivos adjuntos</caption>
+<thead>
+	<tr>
+		<th>Archivo</th>
+		<th style="width: 10%">Tamaño</th>
+		<th style="width: 5%"></th>
+	</tr>
+</thead>
+<tbody>
+<?php
+
+		$tr = '<tr>
+				<td>%1$s</td>
+				<td>%2$s</td>
+				<td>
+					<a href="/reportes/deleteFile/%3$s" class="delete">Eliminar</a>
+				</td>
+			   </tr>';
+
+		foreach(new DirectoryIterator($dir) as $file)
+		{
+			if(!$file->isDot())
+			{
+				$file_kb = round(($file->getSize() / 1024), 1) . ' KB';
+				$file_mb = round(($file->getSize() / 1048576), 1) . ' MB';
+				$size    = $file_mb < 1 ? $file_kb : $file_mb;
+				
+				$params = array(
+					'id'   => $this->id,
+					'file' => $file->getFilename()
+				);
+				$params = base64_encode(serialize($params));
+				
+				printf($tr, $file->getFilename(), $size, $params);
+				//$file->pathName;
+				//$file->fileName;
+				
+				
+				
+			}
+			
+		}
+
+?>
+	
+</tbody>
+</table>
+
+<?php endif; ?>
+<?php endif; ?>

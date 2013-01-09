@@ -1,0 +1,149 @@
+<?php 
+
+	$this->headMeta()->appendHttpEquiv('content-type', 'text/html; charset=utf-8');
+	
+	$this->headLink()->appendStylesheet('/css/reset.css')
+					 ->appendStylesheet('/css/960.css')
+					 ->appendStylesheet('/css/text.css')
+					 ->appendStylesheet('/css/global.css')
+	                 ->headLink(array('rel' => 'favicon',
+	                                  'href' => '/img/favicon.ico'),
+	                                  'PREPEND');
+									  
+	$request 	= Zend_Controller_Front::getInstance()->getRequest();
+	$actionName = $request->getActionName();
+	$title 		= 'Captura del informe';		
+	
+	$this->headTitle($title)
+		 ->headTitle('Facultad de Filosofía y Letras, UNAM');
+	$this->headTitle()->setSeparator(' / ');
+
+?>
+<?php print $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+  <?php print $this->headMeta() ?>
+  <?php print $this->headTitle() ?>
+  <?php print $this->headLink() ?>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/js/ckeditor/ckeditor.js" type="text/javascript"></script>
+<script src="/js/ckeditor/adapters/jquery.js" type="text/javascript"></script>
+<script src="/js/jquery.scrollTo-1.4.2-min.js" type="text/javascript"></script>
+<script src="/js/global.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+<div class="container">
+	<div class="fixed">
+	<div class="wrapper-header">
+		<div id="header" class="container_12">
+			<h1>
+				<a href="/">Facultad de Filosofía y Letras, UNAM</a>
+			</h1>
+			<ul class="nav">
+			<?php if($this->user->hasIdentity()) : ?>
+				<li>
+					<a href="#" class="dropdown"><?php print $this->user->getIdentity()->username ?></a>
+					<ul>
+						<?php if($this->user->getIdentity()->group == 1) : ?>
+							<li><a href="/guias">Administrar instrucciones</a></li>
+							<li><a href="/users">Administrar usuarios</a></li>
+						<?php endif; ?>
+						<li><a href="/users/logout">Salir</a></li>
+					</ul>
+				</li>
+			<?php else : ?>
+				<li><a href="/users/login">Acceder</a></li>
+			<?php endif; ?>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="wrapper-navigation">
+		<div id="navigation" class="container_12">
+			<h2 class="title_action"><?php print $title ?></h2>
+			<?php if($this->user->hasIdentity()) : ?>
+			<?php
+			
+				$format_li = '<li%s><a href="/%s/%s">%s</a></li>';
+				
+				$menu = array(
+					array(
+						'Imprimir informe',
+						'index', // controller
+						'informe', // action
+						array(1) // user group (array, int o vacío para todos)
+					)
+				);
+				
+			
+				print '<ul class="options">';
+				
+					if(is_array($menu))
+					{
+						
+						$group_user = $this->user->getIdentity()->group;
+						
+						foreach($menu as $item) :
+							
+							$group_item	= isset($item[3])
+										? is_array($item[3])
+										? $item[3]
+										: array($item[3])
+										: array(0);
+							
+							if($group_user == $group_item
+								|| in_array($group_user, $group_item)
+								|| empty($group_item[0]))
+							{
+							
+								$selected = ($request->getControllerName() == $item[1])
+											&& ($request->getActionName() == $item[2])
+										  ? ' class="active"'
+										  : '';
+								printf($format_li, $selected, $item[1], $item[2], $item[0]);
+							
+							}
+							
+						endforeach;
+						
+					}
+				
+				print '</ul>'
+			
+				
+			?>
+			<?php endif; ?>
+			
+		</div>
+	</div>
+	</div>
+
+	<div class="wrapper-content">
+		<div id="content" class="container_12">
+			
+	        <?php
+	        
+	        if($this->layout()->nestedLayout): ?>  
+            <?php $this->layout()->setLayout($this->layout()->nestedLayout); ?> 
+	        <?php else: ?> 
+	            <?php $this->layout()->setLayout('default'); ?> 
+	        <?php endif;?> 
+	        <?php echo $this->layout()->render();  ?> 
+			
+		</div>
+	</div>
+	
+	<div class="wrapper-footer">
+		<div id="footer" class="container_12">
+			<a href="mailto:markotom@gmail.com" class="feedback">FeedBack</a>
+		</div>
+	</div>
+
+</div>
+
+<a href="#" class="toTop">Ir arriba</a>
+</body>
+</html>

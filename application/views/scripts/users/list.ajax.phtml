@@ -1,0 +1,75 @@
+<?php
+
+	if($this->status && (count($this->status) > 0))
+	{
+	
+		$status_format = '<div class="status_%s">%s</div>';
+		foreach($this->status as $type => $list)
+		{
+			foreach($list as $status)
+				printf($status_format, $type, $status);
+		}
+	
+	}
+
+?>
+<?php if(count($this->list) > 0) : ?>
+<table class="table1">
+	<caption>Lista de usuarios</caption>
+	<thead>
+		<tr>
+			<th style="width: 2%">#</th>
+			<th style="width: 23%">Área</th>
+			<th style="width: 15%">Nombre de usuario</th>
+			<th style="width: 25%">Correo electrónico</th>
+			<th style="width: 15%">Último acceso</th>
+			<th style="width: 2%">Grupo</th>
+			<th style="width: 8%"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$tr = '<tr>
+				     <td>%1$d</td>
+				     <td>%2$s</td>
+				     <td>%3$s%7$s</td>
+				     <td>%4$s</td>
+				     <td>%5$s</td>
+				     <td>%6$s</td>
+				     <td>
+				       <a href="/users/send/%1$d" class="hreq send">Enviar contraseña</a>
+				       <a href="/users/edit/%1$d" class="hreq edit">Editar</a>
+					   <a href="/users/trash/%1$d" class="hreq delete">Eliminar</a>
+				     </td>
+				   </tr>';
+		
+			$guias = new Application_Model_DbTable_Guias;
+			foreach($this->list as $item)
+			{
+				
+				$guia = $guias->select()
+							  ->where('user_id = ?', $item['id'])
+							  ->query()
+							  ->fetchAll();
+				$count = count($guia);
+						  
+				$img_guias = $count > 0 ? '<div class="guia" title="Usuario con '.$count.' instrucciones"></div>' : '';
+				
+				printf(
+					$tr,
+					$item['id'],
+					$item['area'],
+					$item['username'],
+					$item['email'],
+					$item['last_login'],
+					$item['group'],
+					$img_guias
+				);
+				
+			}
+				
+		?>
+	</tbody>
+</table>
+<?php endif; ?>

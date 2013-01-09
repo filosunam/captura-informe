@@ -1,0 +1,78 @@
+<?php if(count($this->list) > 0) : ?>
+<?php $is_admin = $this->user->getIdentity()->username == 'admin' ? 1 : 0; ?>
+<table class="table1">
+	<caption>Lista de reportes</caption>
+	<thead>
+		<tr>
+			<th style="width: 2%">#</th>
+			<th style="width: 5%">Año</th>
+			<?php if($is_admin): ?>
+				<th style="width: 20%">Área</th>
+			<?php endif; ?>
+			<th style="width: <?php print $is_admin ? 30 : 50; ?>%">Resumen</th>
+			<th style="width: 15%">Actualización</th>
+			<th style="width: 15%">Creación</th>
+			<th style="width: 7%">Vo. Bo.</th>
+			<th style="width: 6%"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$tr = '<tr>
+				     <td>%1$d</td>
+				     <td>%2$d</td>
+				     %10$s
+				     <td%7$s>%3$s%8$s</td>
+				     <td>%4$s</td>
+				     <td>%5$s</td>
+				     <td><div class="vobo_%6$s"></div></td>
+				     <td>
+				       <a href="/reportes/edit/%9$d" class="edit">Editar</a>
+					   <a href="/reportes/delete/%9$d" class="delete">Eliminar</a>
+				     </td>
+				   </tr>';
+		
+			$users = new Application_Model_DbTable_Users;
+			$i = count($this->list);
+			foreach($this->list as $item)
+			{
+				$resumen = strip_tags($item['resumen']);
+				$resumen = strlen($resumen) > 200
+						 ? substr($resumen, 0, 200) . '[...]'
+						 : $resumen;
+				
+				$dir   = $this->directory . "/{$item['id']}";
+				$count = 0;
+				if(is_dir($dir))
+				{
+					foreach(new DirectoryIterator($dir) as $file)				
+						$count += $file->isDot() ? 0 : 1;
+				}
+				
+				$user = $users->find($item['user_id'])->current();
+								
+				printf(
+					$tr,
+					$i,
+					$item['anualidad'],
+					$resumen,
+					$item['updated_at'],
+					$item['created_at'],
+					$item['vobo'] > 0 ? 'true' : 'false',
+					$count > 0 ? ' title="'.$count.' archivos adjuntos"' : '',
+					$count > 0 ? '<div class="attached"></div>' : '',
+					$item['id'],
+					$is_admin ? "<td>{$user->area}</td>" : ''
+				);
+				
+				$i--;
+				
+			}
+				
+		?>
+	</tbody>
+</table>
+<?php else : ?>
+<div class="aviso">Aún no tienes reportes</div>
+<?php endif; ?>
