@@ -222,7 +222,7 @@ class UsersController extends Zend_Controller_Action
 			if($response)
 			{
 				
-				$mensaje = "Estimado\n\nComo ya es de su conocimiento, en próximas fechas se presentará el informe anual de la Facultad. Con el fin de agilizar la recopilación de datos se usará la plataforma digital diseñada para el caso: http://informe.filos.unam.mx/. En ella encontrará las instrucciones necesarias para realizar su informe.\n\nSu usuario es {$user[0]['username']}\nSu contraseña es $password\n\nLe solicitamos atentamente que comience a alimentar la plataforma con la información correspondiente a su área. La fecha límite será el 18 de enero del año en curso.\nSin otro particular, le envío un cordial saludo,\nErnesto Priani Saisó\nSecretario Académico\n\nP. S.: Para mejorar la herramienta –en su estructura o en las instrucciones–, por favor háganoslo saber por correo-e.";
+				$mensaje = "Estimado\n\nComo ya es de su conocimiento, en próximas fechas se presentará el informe anual de la Facultad. Con el fin de agilizar la recopilación de datos se usará la plataforma digital diseñada para el caso: http://informe.filos.unam.mx/. En ella encontrará las instrucciones necesarias para realizar su informe.\n\nSu usuario es {$user[0]['username']}\nSu contraseña es $password\n\nLe solicitamos atentamente que comience a alimentar la plataforma con la información correspondiente a su área. La fecha límite será el 18 de enero del año en curso.\n\nSin otro particular, le envío un cordial saludo,\n\nErnesto Priani Saisó\nSecretario Académico\n\nP. S.: Para mejorar la herramienta –en su estructura o en las instrucciones–, por favor háganoslo saber por correo-e.";
 				
 				$mail = new Zend_Mail('UTF-8');
 				$mail->setBodyText($mensaje);
